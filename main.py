@@ -15,40 +15,34 @@ def get_pokemon(pokemon_number):
     }
     return new_pokemon
 
+
+def choose_pokemon(deck):
+    print("Choose your Pokemon:")
+    for idx, pokemon in enumerate(deck, start=1):
+        print(f"{idx}. {pokemon['name']} (ID: {pokemon['id']}, Height: {pokemon['height']}, Weight: {pokemon['weight']})")
+
+    choice = int(input("Enter the number of the Pokemon you want to choose: "))
+    return deck.pop(choice - 1)
+
 player_name = input("Please, enter yor name\n")
 game_score = 0
+
+# Initialize new_score outside the if block
+new_score = ""
+
 #main cycle
 while (input("Press ENTER to start a new game\n") != '\n'):
     deck = list(range(1, 151))
-    player_deck = list()
-    while len(player_deck) < 5:
-        num = random.choice(deck)
-        player_deck.append(get_pokemon(num))
-        deck.remove(num)
+    player_deck = [get_pokemon(random.choice(deck)) for _ in range(5)]
+    comp_deck = [get_pokemon(random.choice(deck)) for _ in range(5)]
 
-    comp_deck = list()
-    while len(comp_deck) < 5:
-        num = random.choice(deck)
-        comp_deck.append(get_pokemon(num))
-        deck.remove(num)
+    # Game cycle goes until one of the decks (player or computer) is not empty
+    while len(comp_deck) > 0 and len(player_deck) > 0:
+        print("Computer deck:\n", [pokemon['name'] for pokemon in comp_deck])
+        print("\nPlayer deck:\n", [pokemon['name'] for pokemon in player_deck], "\n")
 
-# game cycle goes until one of the decks (player or computer) will not be empty
-
-    while(len(comp_deck) > 0 and len(player_deck) > 0):
-        print("Computer deck: \n")
-        for pokemon in comp_deck:
-            print(pokemon['name'])
-        print("\n Player deck: \n")
-        for pokemon in player_deck:
-            print(pokemon['name'])
-        print("\n")
-
-# get first pokemon from the players deck and print info about it
-        player_pokemon = player_deck.pop(0)
-        print("Your Pokemon is {}\n ID: {} \n Height: {} \n Weight: {} \n".format(player_pokemon['name'].upper(),
-                                                                              player_pokemon['id'],
-                                                                              player_pokemon['height'],
-                                                                              player_pokemon['weight']))
+        # Get the player's chosen Pokemon
+        player_pokemon = choose_pokemon(player_deck)
 
 # choosing of the statement
         choose = input("Choose the stat: h for height, w for weight, everything else for id.\n")
