@@ -41,7 +41,9 @@ while input('Press ENTER to start a new game\n') != '\n':
     comp_deck = []
 
     while (len(player_deck) < DECK_SIZE):
+        number = random.choice(deck)
         comp_deck.append(get_pokemon(random.choice(deck)))
+        deck.remove(number)
         choice_deck = [get_pokemon(random.choice(deck)) for _ in range(3)]
         choice = choose_pokemon(choice_deck)
         player_deck.append(choice)
