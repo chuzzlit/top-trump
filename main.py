@@ -21,7 +21,13 @@ def output_pokemon_info(pokemon):
                                                                                   pokemon['height'],
                                                                                   pokemon['weight']))
 
+def choose_pokemon(deck):
+    print("Choose your Pokemon:")
+    for idx, pokemon in enumerate(deck, start=1):
+        print(f"{idx}. {pokemon['name']} (ID: {pokemon['id']}, Height: {pokemon['height']}, Weight: {pokemon['weight']})")
 
+    choice = int(input("Enter the number of the Pokemon you want to choose: "))
+    return deck[choice - 1]
 
 DECK_SIZE = 5
 stats = ["id", "height", "weight"]
@@ -31,18 +37,19 @@ while input('Press ENTER to start a new game\n') != '\n':
     player_move = True
     game_score = 0
     deck = list(range(1, 151))
+    player_deck = []
+    comp_deck = []
 
-    player_deck = list()
-    while len(player_deck) < DECK_SIZE:
-        num = random.choice(deck)
-        player_deck.append(get_pokemon(num))
-        deck.remove(num)
+    while (len(player_deck) < DECK_SIZE):
+        comp_deck.append(get_pokemon(random.choice(deck)))
+        choice_deck = [get_pokemon(random.choice(deck)) for _ in range(3)]
+        choice = choose_pokemon(choice_deck)
+        player_deck.append(choice)
+        deck.remove(int(choice['id']))
 
-    comp_deck = list()
-    while len(comp_deck) < DECK_SIZE:
-        num = random.choice(deck)
-        comp_deck.append(get_pokemon(num))
-        deck.remove(num)
+    # just for testing
+    print("Computer deck:\n", [pokemon['name'] for pokemon in comp_deck])
+    print("\nPlayer deck:\n", [pokemon['name'] for pokemon in player_deck], "\n")
 
     # game cycle goes until one of the decks (player or computer) will not be empty
     while len(comp_deck) > 0 and len(player_deck) > 0:
@@ -78,7 +85,7 @@ while input('Press ENTER to start a new game\n') != '\n':
             player_deck.append(player_pokemon)
             player_deck.append(comp_pokemon)
         elif player_pokemon[stat] < comp_pokemon[stat]:
-            print("Computer wins! \n")
+            print("COMPUTER wins! \n")
             player_move = False
             game_score += (comp_pokemon[stat] - player_pokemon[stat])
             comp_deck.append(comp_pokemon)
