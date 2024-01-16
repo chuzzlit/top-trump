@@ -16,7 +16,7 @@ def get_pokemon(pokemon_number):
     return new_pokemon
 
 def output_pokemon_info(pokemon):
-    print(" {}\n ID: {} \n Height: {} \n Weight: {} \n".format(pokemon['name'].upper(),
+    print(" {} \nID: {}  Height: {}  Weight: {} ".format(pokemon['name'].upper(),
                                                                                   pokemon['id'],
                                                                                   pokemon['height'],
                                                                                   pokemon['weight']))
